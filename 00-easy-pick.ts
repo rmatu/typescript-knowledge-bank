@@ -1,3 +1,5 @@
+// https://www.youtube.com/watch?v=knOgB-Aa8Pc
+
 type MyPick<TObj, TKey extends keyof TObj> = {
   [SpecificKey in TKey]: TObj[SpecificKey];
 };

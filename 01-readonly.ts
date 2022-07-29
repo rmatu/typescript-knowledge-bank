@@ -1,3 +1,5 @@
+// https://www.youtube.com/watch?v=U1EygIpjAEM
+
 interface Todo {
   title: string;
   description: string;
@@ -32,5 +34,7 @@ const todo: MyReadonly<Todo> = {
   description: "foobar",
 };
 
+// @ts-expect-error
 todo.title = "Hello"; // Error: cannot reassign a readonly property
+// @ts-expect-error
 todo.description = "barFoo"; // Error: cannot reassign a readonly property

@@ -1,3 +1,5 @@
+// https://www.youtube.com/watch?v=iNs_z-vsfVM
+
 type Length<TTuple extends readonly any[]> = TTuple["length"];
 
 import type { Equal, Expect } from "@type-challenges/utils";
