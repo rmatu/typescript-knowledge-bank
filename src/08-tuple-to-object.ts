@@ -1,9 +1,14 @@
 // https://www.youtube.com/watch?v=nK6qW_NsPvc
 
-type TupleToObject<T extends readonly any[]> = any;
-
-/* _____________ Test Cases _____________ */
 import type { Equal, Expect } from "@type-challenges/utils";
+
+type TupleToObject<TTuple extends readonly PropertyKey[]> = {
+  [TIndex in TTuple[number]]: TIndex;
+};
+
+type PK = PropertyKey; // string | number | symbol;
+
+type ArrayMember = typeof tuple[number]; // "tesla" | "model 3" | "model X" | "model Y";
 
 const tuple = ["tesla", "model 3", "model X", "model Y"] as const;
 const tupleNumber = [1, 2, 3, 4] as const;

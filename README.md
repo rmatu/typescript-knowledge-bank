@@ -2,7 +2,7 @@
 
 ## Knowledge gained from
 
-- Matt Pocock: https://www.mattpocock.com/
+- Matt Pocock: https://twitter.com/mattpocockuk
 - Contributors of: https://github.com/type-challenges/type-challenges
 
 ## Description
