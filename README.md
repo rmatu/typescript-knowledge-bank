@@ -7,7 +7,7 @@
 
 ## Description
 
-- [00-easy-pick](#00-easy-pick)
+- [00-tuple-to-object](#08-tuple-to-object)
 - [01-readonly](#01-readonly)
 - [02-operating-on-object-keys](#02-operating-on-object-keys)
 - [03-loose-autocomplete-react](#03-loose-autocomplete-react)
@@ -15,31 +15,38 @@
 - [05-dynamic-function-arguments](05-dynamic-function-arguments)
 - [06-tuple-length](#06-tuple-length)
 - [07-first-of-array](#07-first-of-array)
-- [08-tuple-to-object](#08-tuple-to-object)
+- [08-easy-pick](#08-easy-pick)
 
-## 00-easy-pick
+## 00-tuple-to-object
 
-Implement the built-in `Pick<T, K>` generic without using it.
-
-Constructs a type by picking the set of properties `K` from `T`
+Give an array, transform into an object type and the key/value must in the given array.
 
 ```ts
-type MyPick<TObj, TKey extends keyof TObj> = {
-  [SpecificKey in TKey]: TObj[SpecificKey];
+type TupleToObject<TTuple extends readonly PropertyKey[]> = {
+  [TIndex in TTuple[number]]: TIndex;
 };
 
-type Result = MyPick<{ a: number; b: number }, "a">;
+type PK = PropertyKey; // string | number | symbol;
 
-// type Result = {
-//   a: number;
-// }
+type ArrayMember = typeof tuple[number]; // "tesla" | "model 3" | "model X" | "model Y";
 
-type AnotherResult = MyPick<{ a: number; b: number }, "a" | "b">;
+const tuple = ["tesla", "model 3", "model X", "model Y"] as const;
+const tupleNumber = [1, 2, 3, 4] as const;
+const tupleMix = [1, "2", 3, "4"] as const;
 
-// type AnotherResult = {
-//   a: number;
-//   b: number;
-// }
+type cases = [
+  Expect<
+    Equal<
+      TupleToObject<typeof tuple>,
+      { tesla: "tesla"; "model 3": "model 3"; "model X": "model X"; "model Y": "model Y" }
+    >
+  >,
+  Expect<Equal<TupleToObject<typeof tupleNumber>, { 1: 1; 2: 2; 3: 3; 4: 4 }>>,
+  Expect<Equal<TupleToObject<typeof tupleMix>, { 1: 1; "2": "2"; 3: 3; "4": "4" }>>
+];
+
+// @ts-expect-error
+type error = TupleToObject<[[1, 2], {}]>;
 ```
 
 ## 01-readonly
@@ -231,34 +238,27 @@ type cases = [
 ];
 ```
 
-## 08-tuple-to-object
+## 08-easy-pick
 
-Give an array, transform into an object type and the key/value must in the given array.
+Implement the built-in `Pick<T, K>` generic without using it.
+
+Constructs a type by picking the set of properties `K` from `T`
 
 ```ts
-type TupleToObject<TTuple extends readonly PropertyKey[]> = {
-  [TIndex in TTuple[number]]: TIndex;
+type MyPick<TObj, TKey extends keyof TObj> = {
+  [SpecificKey in TKey]: TObj[SpecificKey];
 };
 
-type PK = PropertyKey; // string | number | symbol;
+type Result = MyPick<{ a: number; b: number }, "a">;
 
-type ArrayMember = typeof tuple[number]; // "tesla" | "model 3" | "model X" | "model Y";
+// type Result = {
+//   a: number;
+// }
 
-const tuple = ["tesla", "model 3", "model X", "model Y"] as const;
-const tupleNumber = [1, 2, 3, 4] as const;
-const tupleMix = [1, "2", 3, "4"] as const;
+type AnotherResult = MyPick<{ a: number; b: number }, "a" | "b">;
 
-type cases = [
-  Expect<
-    Equal<
-      TupleToObject<typeof tuple>,
-      { tesla: "tesla"; "model 3": "model 3"; "model X": "model X"; "model Y": "model Y" }
-    >
-  >,
-  Expect<Equal<TupleToObject<typeof tupleNumber>, { 1: 1; 2: 2; 3: 3; 4: 4 }>>,
-  Expect<Equal<TupleToObject<typeof tupleMix>, { 1: 1; "2": "2"; 3: 3; "4": "4" }>>
-];
-
-// @ts-expect-error
-type error = TupleToObject<[[1, 2], {}]>;
+// type AnotherResult = {
+//   a: number;
+//   b: number;
+// }
 ```
