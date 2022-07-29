@@ -23,8 +23,6 @@ Implement the built-in `Pick<T, K>` generic without using it.
 
 Constructs a type by picking the set of properties `K` from `T`
 
-For example:
-
 ```ts
 type MyPick<TObj, TKey extends keyof TObj> = {
   [SpecificKey in TKey]: TObj[SpecificKey];
@@ -49,8 +47,6 @@ type AnotherResult = MyPick<{ a: number; b: number }, "a" | "b">;
 Implement the built-in `Readonly<T>` generic without using it.
 
 Constructs a type with all properties of T set to readonly, meaning the properties of the constructed type cannot be reassigned.
-
-For example:
 
 ```ts
 interface Todo {
@@ -208,8 +204,6 @@ sendEvent("LOG_IN", {});
 
 For given a tuple, you need create a generic `Length`, pick the length of the tuple
 
-For example:
-
 ```ts
 type tesla = ["tesla", "model 3", "model X", "model Y"];
 type spaceX = ["FALCON 9", "FALCON HEAVY", "DRAGON", "STARSHIP", "HUMAN SPACEFLIGHT"];
@@ -220,8 +214,6 @@ type spaceXLength = Length<spaceX>; // expected 5
 ## 07-first-of-array
 
 Implement a generic `First<T>` that takes an Array `T` and returns it's first element's type.
-
-For example:
 
 ```ts
 type Length<TTuple extends readonly any[]> = TTuple["length"];
@@ -242,8 +234,6 @@ type cases = [
 ## 08-tuple-to-object
 
 Give an array, transform into an object type and the key/value must in the given array.
-
-For example:
 
 ```ts
 const tuple = ["tesla", "model 3", "model X", "model Y"] as const;
