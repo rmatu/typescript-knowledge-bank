@@ -1,5 +1,7 @@
 // https://www.youtube.com/watch?v=PEQn1a6xOHc
 
+type RemoveMaps<T> = T extends `maps:${infer U}` ? U : T;
+
 interface ApiData {
   "maps:longitude": string;
   "maps:latitude": string;
@@ -17,5 +19,3 @@ type DesiredShape = RemoveMapsFromObj<ApiData>;
 //   latitude: string;
 //   awesome: boolean;
 // }
-
-type RemoveMaps<T> = T extends `maps:${infer U}` ? U : T;

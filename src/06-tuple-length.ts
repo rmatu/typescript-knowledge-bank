@@ -1,8 +1,7 @@
 // https://www.youtube.com/watch?v=iNs_z-vsfVM
+import type { Equal, Expect } from "@type-challenges/utils";
 
 type Length<TTuple extends readonly any[]> = TTuple["length"];
-
-import type { Equal, Expect } from "@type-challenges/utils";
 
 const tesla = ["tesla", "model 3", "model X", "model Y"] as const;
 const spaceX = ["FALCON 9", "FALCON HEAVY", "DRAGON", "STARSHIP", "HUMAN SPACEFLIGHT"] as const;

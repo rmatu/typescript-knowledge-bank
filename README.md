@@ -99,6 +99,8 @@ todo.description = "barFoo"; // Error: cannot reassign a readonly property
 ## 02-operating-on-object-keys
 
 ```ts
+type RemoveMaps<T> = T extends `maps:${infer U}` ? U : T;
+
 interface ApiData {
   "maps:longitude": string;
   "maps:latitude": string;
@@ -116,8 +118,6 @@ type DesiredShape = RemoveMapsFromObj<ApiData>;
 //   latitude: string;
 //   awesome: boolean;
 // }
-
-type RemoveMaps<T> = T extends `maps:${infer U}` ? U : T;
 ```
 
 ## 03-loose-autocomplete-react
@@ -212,10 +212,19 @@ sendEvent("LOG_IN", {});
 For given a tuple, you need create a generic `Length`, pick the length of the tuple
 
 ```ts
-type tesla = ["tesla", "model 3", "model X", "model Y"];
-type spaceX = ["FALCON 9", "FALCON HEAVY", "DRAGON", "STARSHIP", "HUMAN SPACEFLIGHT"];
-type teslaLength = Length<tesla>; // expected 4
-type spaceXLength = Length<spaceX>; // expected 5
+type Length<TTuple extends readonly any[]> = TTuple["length"];
+
+const tesla = ["tesla", "model 3", "model X", "model Y"] as const;
+const spaceX = ["FALCON 9", "FALCON HEAVY", "DRAGON", "STARSHIP", "HUMAN SPACEFLIGHT"] as const;
+
+type cases = [
+  Expect<Equal<Length<typeof tesla>, 4>>,
+  Expect<Equal<Length<typeof spaceX>, 5>>,
+  // @ts-expect-error
+  Length<5>,
+  // @ts-expect-error
+  Length<"hello world">
+];
 ```
 
 ## 07-first-of-array
