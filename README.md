@@ -26,16 +26,22 @@ Constructs a type by picking the set of properties `K` from `T`
 For example:
 
 ```ts
-interface Todo {
-  title: string;
-  description: string;
-  completed: boolean;
-}
-type TodoPreview = MyPick<Todo, "title" | "completed">;
-const todo: TodoPreview = {
-  title: "Clean room",
-  completed: false,
+type MyPick<TObj, TKey extends keyof TObj> = {
+  [SpecificKey in TKey]: TObj[SpecificKey];
 };
+
+type Result = MyPick<{ a: number; b: number }, "a">;
+
+// type Result = {
+//   a: number;
+// }
+
+type AnotherResult = MyPick<{ a: number; b: number }, "a" | "b">;
+
+// type AnotherResult = {
+//   a: number;
+//   b: number;
+// }
 ```
 
 ## 01-readonly
@@ -51,11 +57,39 @@ interface Todo {
   title: string;
   description: string;
 }
+
+interface Todo2 {
+  title: string;
+  description: string;
+  address: {
+    street: string;
+    houseNumber: number;
+  };
+}
+
+type MyReadonly<TInput> = {
+  readonly [Key in keyof TInput]: TInput[Key];
+};
+
+type MyResult = MyReadonly<Todo2>;
+
+// type MyResult = {
+//   readonly title: string;
+//   readonly description: string;
+//   readonly address: {
+//       street: string;
+//       houseNumber: number;
+//   };
+// }
+
 const todo: MyReadonly<Todo> = {
   title: "Hey",
   description: "foobar",
 };
+
+// @ts-expect-error
 todo.title = "Hello"; // Error: cannot reassign a readonly property
+// @ts-expect-error
 todo.description = "barFoo"; // Error: cannot reassign a readonly property
 ```
 
@@ -190,10 +224,19 @@ Implement a generic `First<T>` that takes an Array `T` and returns it's first el
 For example:
 
 ```ts
-type arr1 = ["a", "b", "c"];
-type arr2 = [3, 2, 1];
-type head1 = First<arr1>; // expected to be 'a'
-type head2 = First<arr2>; // expected to be 3
+type Length<TTuple extends readonly any[]> = TTuple["length"];
+
+const tesla = ["tesla", "model 3", "model X", "model Y"] as const;
+const spaceX = ["FALCON 9", "FALCON HEAVY", "DRAGON", "STARSHIP", "HUMAN SPACEFLIGHT"] as const;
+
+type cases = [
+  Expect<Equal<Length<typeof tesla>, 4>>,
+  Expect<Equal<Length<typeof spaceX>, 5>>,
+  // @ts-expect-error
+  Length<5>,
+  // @ts-expect-error
+  Length<"hello world">
+];
 ```
 
 ## 08-tuple-to-object

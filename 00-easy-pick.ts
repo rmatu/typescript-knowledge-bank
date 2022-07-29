@@ -4,15 +4,15 @@ type MyPick<TObj, TKey extends keyof TObj> = {
   [SpecificKey in TKey]: TObj[SpecificKey];
 };
 
-type Yeah = MyPick<{ a: number; b: number }, "a">;
+type Result = MyPick<{ a: number; b: number }, "a">;
 
-// type Yeah = {
+// type Result = {
 //   a: number;
 // }
 
-type Wow = MyPick<{ a: number; b: number }, "a" | "b">;
+type AnotherResult = MyPick<{ a: number; b: number }, "a" | "b">;
 
-// type Wow = {
+// type AnotherResult = {
 //   a: number;
 //   b: number;
 // }
