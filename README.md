@@ -21,6 +21,7 @@
 - [11-decode-search-params](#11-decode-search-params)
 - [12-remove-member-of-union](#12-remove-member-of-union)
 - [13-deep-value](#13-deep-value)
+- [14-props-from-react-component](#14-props-from-react-component)
 
 ## 00-tuple-to-object
 
