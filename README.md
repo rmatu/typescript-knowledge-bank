@@ -17,6 +17,7 @@
 - [07-first-of-array](#07-first-of-array)
 - [08-easy-pick](#08-easy-pick)
 - [09-modules-into-types](#09-modules-into-types)
+- [10-deep-partial](#10-deep-partial)
 
 ## 00-tuple-to-object
 
@@ -319,4 +320,53 @@ type AnotherResult = MyPick<{ a: number; b: number }, "a" | "b">;
 export type ActionModule = typeof import("./constants");
 
 export type Action = ActionModule[keyof ActionModule]; // "ADD_TODO" | "REMOVE_TODO" | "EDIT_TODO";
+```
+
+## 10-deep-partial
+
+<a href="https://www.youtube.com/watch?v=AhzjPAtzGTs" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
+<a href="./examples/10-deep-partial/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
+<br />
+
+```ts
+type DeepPartial<T> = T extends Function
+  ? T
+  : T extends Array<infer InferredArrayMember>
+  ? DeepPartialArray<InferredArrayMember>
+  : T extends object
+  ? DeepPartialObject<T>
+  : T | undefined;
+
+interface DeepPartialArray<T> extends Array<DeepPartial<T>> {}
+
+type DeepPartialObject<T> = {
+  [Key in keyof T]?: DeepPartial<T[Key]>;
+};
+
+interface Post {
+  id: string;
+  comments: { value: string }[];
+  meta: {
+    name: string;
+    description: string;
+  };
+}
+
+const post: DeepPartial<Post> = {
+  id: "1",
+  meta: {
+    description: "123",
+  },
+};
+
+/**
+ * TypeScript Partial works only 1 level deep
+ */
+const secondPost: Partial<Post> = {
+  id: "1",
+  //@ts-expect-error
+  meta: {
+    description: "123",
+  },
+};
 ```
