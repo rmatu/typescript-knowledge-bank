@@ -26,7 +26,11 @@ sendEvent("LOG_IN", { userId: "123" });
 /**
  * Should error
  */
+// @ts-expect-error
 sendEvent("SIGN_OUT", {});
+// @ts-expect-error
 sendEvent("LOG_IN", { userId: 123 });
+// @ts-expect-error
 sendEvent("LOG_IN", {});
+// @ts-expect-error
 sendEvent("LOG_IN", {});
