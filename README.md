@@ -16,13 +16,14 @@
 - [06-tuple-length](#06-tuple-length)
 - [07-first-of-array](#07-first-of-array)
 - [08-easy-pick](#08-easy-pick)
+- [09-modules-into-types](#09-modules-into-types)
 
 ## 00-tuple-to-object
 
 <a href="https://www.youtube.com/watch?v=nK6qW_NsPvc" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
 <a href="./examples/00-tuple-to-object/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
 <br />
-<br />
+
 Give an array, transform into an object type and the key/value must in the given array.
 
 ```ts
@@ -57,8 +58,6 @@ type error = TupleToObject<[[1, 2], {}]>;
 
 <a href="https://www.youtube.com/watch?v=plsnFfbqVEo" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
 <a href="./examples/01-index-access/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
-<br />
-<br />
 
 ```ts
 interface ColorVariants {
@@ -88,8 +87,6 @@ type Role = UserRoleConfig[keyof UserRoleConfig][number]; // type Role = "view" 
 
 <a href="https://www.youtube.com/watch?v=PEQn1a6xOHc" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
 <a href="./examples/02-operating-on-object-keys/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
-<br />
-<br />
 
 ```ts
 type RemoveMaps<T> = T extends `maps:${infer U}` ? U : T;
@@ -117,8 +114,6 @@ type DesiredShape = RemoveMapsFromObj<ApiData>;
 
 <a href="https://www.youtube.com/watch?v=a_m7jxrTlaw" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
 <a href="./examples/03-loose-autocomplete-react/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
-<br />
-<br />
 
 ```ts
 type IconSize2 = "sm" | "xs" | Omit<string, "xs" | "sm">;
@@ -149,7 +144,7 @@ const Comp1: React.FC = () => {
 <a href="https://www.youtube.com/watch?v=U1EygIpjAEM" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
 <a href="./examples/04-readonly/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
 <br />
-<br />
+
 Implement the built-in `Readonly<T>` generic without using it.
 
 Constructs a type with all properties of T set to readonly, meaning the properties of the constructed type cannot be reassigned.
@@ -199,8 +194,6 @@ todo.description = "barFoo"; // Error: cannot reassign a readonly property
 
 <a href="https://www.youtube.com/watch?v=YE_3WwX-Dl8" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
 <a href="./examples/05-dynamic-function-arguments/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
-<br />
-<br />
 
 ```ts
 export type Event =
@@ -238,9 +231,9 @@ sendEvent("LOG_IN", {});
 ## 06-tuple-length
 
 <a href="https://www.youtube.com/watch?v=iNs_z-vsfVM" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
-<a href="./examples/06-tuple-length" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a/index.ts" alt="Code"/></a>
+<a href="./examples/06-tuple-length/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
 <br />
-<br />
+
 For given a tuple, you need create a generic `Length`, pick the length of the tuple
 
 ```ts
@@ -262,9 +255,9 @@ type cases = [
 ## 07-first-of-array
 
 <a href="https://www.youtube.com/watch?v=dZWJrjzqvv8" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
-<a href="./examples/07-first-of-array" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a/index.ts" alt="Code"/></a>
+<a href="./examples/07-first-of-array/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
 <br />
-<br />
+
 Implement a generic `First<T>` that takes an Array `T` and returns it's first element's type.
 
 ```ts
@@ -292,7 +285,7 @@ type errors = [
 <a href="https://www.youtube.com/watch?v=knOgB-Aa8Pc" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
 <a href="./examples/08-easy-pick/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
 <br />
-<br />
+
 Implement the built-in `Pick<T, K>` generic without using it.
 
 Constructs a type by picking the set of properties `K` from `T`
@@ -320,7 +313,6 @@ type AnotherResult = MyPick<{ a: number; b: number }, "a" | "b">;
 
 <a href="https://www.youtube.com/watch?v=sswUBXaoXSI" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
 <a href="./examples/09-modules-into-types/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
-<br />
 <br />
 
 ```ts
