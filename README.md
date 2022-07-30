@@ -22,6 +22,7 @@
 - [12-remove-member-of-union](#12-remove-member-of-union)
 - [13-deep-value](#13-deep-value)
 - [14-props-from-react-component](#14-props-from-react-component)
+- [15-key-remover](#15-key-remover)
 
 ## 00-tuple-to-object
 
@@ -478,4 +479,34 @@ const props: PropsFrom<typeof MyComponent> = {
 // const props: {
 //   enabled: boolean;
 // }
+```
+
+## 15-key-remover
+
+<a href="https://www.youtube.com/watch?v=VBsKNKEZNnY" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
+<a href="./examples/15-key-remover/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
+<br />
+
+```ts
+const makeKeyRemover =
+  <Key extends string>(keys: Key[]) =>
+  <Obj>(obj: Obj): Omit<Obj, Key> => {
+    return {} as any;
+  };
+
+const keyRemover = makeKeyRemover(["a", "b"]);
+const newObject = keyRemover({ a: 1, b: 2, c: 3 });
+
+/**
+ * Correct
+ */
+newObject.c;
+
+/**
+ * Should error
+ */
+//@ts-expect-error
+newObject.a;
+//@ts-expect-error
+newObject.d;
 ```
