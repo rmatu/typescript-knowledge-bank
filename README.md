@@ -20,6 +20,7 @@
 - [10-deep-partial](#10-deep-partial)
 - [11-decode-search-params](#11-decode-search-params)
 - [12-remove-member-of-union](#12-remove-member-of-union)
+- [13-deep-value](#13-deep-value)
 
 ## 00-tuple-to-object
 
@@ -418,4 +419,34 @@ export type Letters = "a" | "b" | "c";
 type RemoveC<TType> = TType extends "c" ? never : TType;
 
 type WithoutC = RemoveC<Letters>; // "a" | "b"
+```
+
+## 13-deep-value
+
+<a href="https://www.youtube.com/watch?v=xZ8BBBdMwQI" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
+<a href="./examples/13-deep-value/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
+<br />
+
+```ts
+const getDeepValue = <Obj, FirstKey extends keyof Obj, SecondKey extends keyof Obj[FirstKey]>(
+  obj: Obj,
+  firstKey: FirstKey,
+  secondKey: SecondKey
+): Obj[FirstKey][SecondKey] => {
+  return {} as any;
+};
+
+const obj = {
+  foo: {
+    a: true,
+    b: 2,
+  },
+  bar: {
+    c: "cool",
+    d: 2,
+  },
+};
+
+const numberResult = getDeepValue(obj, "bar", "d"); // number
+const stringResult = getDeepValue(obj, "bar", "c"); // string
 ```
