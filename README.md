@@ -19,6 +19,7 @@
 - [09-modules-into-types](#09-modules-into-types)
 - [10-deep-partial](#10-deep-partial)
 - [11-decode-search-params](#11-decode-search-params)
+- [12-remove-member-of-union](#12-remove-member-of-union)
 
 ## 00-tuple-to-object
 
@@ -403,4 +404,18 @@ const obj: Union.Merge<QueryParams> = {
 //   a: "wonderful";
 //   b: "wow";
 // }
+```
+
+## 12-remove-member-of-union
+
+<a href="https://www.youtube.com/watch?v=M4-Jl9JWGmo" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
+<a href="./examples/12-remove-member-of-union/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
+<br />
+
+```ts
+export type Letters = "a" | "b" | "c";
+
+type RemoveC<TType> = TType extends "c" ? never : TType;
+
+type WithoutC = RemoveC<Letters>; // "a" | "b"
 ```
