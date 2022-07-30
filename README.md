@@ -450,3 +450,31 @@ const obj = {
 const numberResult = getDeepValue(obj, "bar", "d"); // number
 const stringResult = getDeepValue(obj, "bar", "c"); // string
 ```
+
+## 14-props-from-react-component
+
+<a href="https://www.youtube.com/watch?v=VBsKNKEZNnY" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
+<a href="./examples/14-props-from-react-component/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
+<br />
+
+```ts
+const MyComponent = (props: { enabled: boolean }) => {
+  return null;
+};
+
+class MyOtherComponent extends React.Component<{ enabled: boolean }> {}
+
+type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
+  ? Props
+  : TComponent extends React.ComponentClass<infer Props>
+  ? Props
+  : never;
+
+const props: PropsFrom<typeof MyComponent> = {
+  enabled: false,
+};
+
+// const props: {
+//   enabled: boolean;
+// }
+```
