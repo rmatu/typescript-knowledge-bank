@@ -8,10 +8,10 @@
 ## Description
 
 - [00-tuple-to-object](#08-tuple-to-object)
-- [01-readonly](#01-readonly)
+- [01-index-access](#01-index-access)
 - [02-operating-on-object-keys](#02-operating-on-object-keys)
 - [03-loose-autocomplete-react](#03-loose-autocomplete-react)
-- [04-index-access](#04-index-access)
+- [04-readonly](#04-readonly)
 - [05-dynamic-function-arguments](05-dynamic-function-arguments)
 - [06-tuple-length](#06-tuple-length)
 - [07-first-of-array](#07-first-of-array)
@@ -49,51 +49,30 @@ type cases = [
 type error = TupleToObject<[[1, 2], {}]>;
 ```
 
-## 01-readonly
-
-Implement the built-in `Readonly<T>` generic without using it.
-
-Constructs a type with all properties of T set to readonly, meaning the properties of the constructed type cannot be reassigned.
+## 01-index-access
 
 ```ts
-interface Todo {
-  title: string;
-  description: string;
+interface ColorVariants {
+  primary: "blue";
+  secondary: "red";
+  tertiary: "green";
 }
 
-interface Todo2 {
-  title: string;
-  description: string;
-  address: {
-    street: string;
-    houseNumber: number;
-  };
+type PrimaryColor = ColorVariants["primary"]; // type PrimaryColor = "blue"
+type NonPrimaryColor = ColorVariants["secondary" | "tertiary"]; // type NonPrimaryColor = "red" | "green"
+type EveryColor = ColorVariants[keyof ColorVariants]; // type EveryColor = "blue" | "red" | "green"
+
+type Letters = ["a", "b", "c"];
+
+type AOrB = Letters[0 | 1]; // type AOrB = "a" | "b";
+type Letter = Letters[number]; // type Letter = "a" | "b" | "c";
+
+interface UserRoleConfig {
+  user: ["view", "create", "update"];
+  superAdmin: ["view", "create", "update", "delete"];
 }
 
-type MyReadonly<TInput> = {
-  readonly [Key in keyof TInput]: TInput[Key];
-};
-
-type MyResult = MyReadonly<Todo2>;
-
-// type MyResult = {
-//   readonly title: string;
-//   readonly description: string;
-//   readonly address: {
-//       street: string;
-//       houseNumber: number;
-//   };
-// }
-
-const todo: MyReadonly<Todo> = {
-  title: "Hey",
-  description: "foobar",
-};
-
-// @ts-expect-error
-todo.title = "Hello"; // Error: cannot reassign a readonly property
-// @ts-expect-error
-todo.description = "barFoo"; // Error: cannot reassign a readonly property
+type Role = UserRoleConfig[keyof UserRoleConfig][number]; // type Role = "view" | "create" | "update" | "delete"
 ```
 
 ## 02-operating-on-object-keys
@@ -146,30 +125,51 @@ const Comp1: React.FC = () => {
 };
 ```
 
-## 04-index-access
+## 04-readonly
+
+Implement the built-in `Readonly<T>` generic without using it.
+
+Constructs a type with all properties of T set to readonly, meaning the properties of the constructed type cannot be reassigned.
 
 ```ts
-interface ColorVariants {
-  primary: "blue";
-  secondary: "red";
-  tertiary: "green";
+interface Todo {
+  title: string;
+  description: string;
 }
 
-type PrimaryColor = ColorVariants["primary"]; // type PrimaryColor = "blue"
-type NonPrimaryColor = ColorVariants["secondary" | "tertiary"]; // type NonPrimaryColor = "red" | "green"
-type EveryColor = ColorVariants[keyof ColorVariants]; // type EveryColor = "blue" | "red" | "green"
-
-type Letters = ["a", "b", "c"];
-
-type AOrB = Letters[0 | 1]; // type AOrB = "a" | "b";
-type Letter = Letters[number]; // type Letter = "a" | "b" | "c";
-
-interface UserRoleConfig {
-  user: ["view", "create", "update"];
-  superAdmin: ["view", "create", "update", "delete"];
+interface Todo2 {
+  title: string;
+  description: string;
+  address: {
+    street: string;
+    houseNumber: number;
+  };
 }
 
-type Role = UserRoleConfig[keyof UserRoleConfig][number]; // type Role = "view" | "create" | "update" | "delete"
+type MyReadonly<TInput> = {
+  readonly [Key in keyof TInput]: TInput[Key];
+};
+
+type MyResult = MyReadonly<Todo2>;
+
+// type MyResult = {
+//   readonly title: string;
+//   readonly description: string;
+//   readonly address: {
+//       street: string;
+//       houseNumber: number;
+//   };
+// }
+
+const todo: MyReadonly<Todo> = {
+  title: "Hey",
+  description: "foobar",
+};
+
+// @ts-expect-error
+todo.title = "Hello"; // Error: cannot reassign a readonly property
+// @ts-expect-error
+todo.description = "barFoo"; // Error: cannot reassign a readonly property
 ```
 
 ## 05-dynamic-function-arguments
@@ -232,18 +232,22 @@ type cases = [
 Implement a generic `First<T>` that takes an Array `T` and returns it's first element's type.
 
 ```ts
-type Length<TTuple extends readonly any[]> = TTuple["length"];
+type First<TArray extends any[]> = TArray extends [infer TFirst, ...any[]] ? TFirst : never;
 
-const tesla = ["tesla", "model 3", "model X", "model Y"] as const;
-const spaceX = ["FALCON 9", "FALCON HEAVY", "DRAGON", "STARSHIP", "HUMAN SPACEFLIGHT"] as const;
+type Result = First<["a", "b"]>;
 
 type cases = [
-  Expect<Equal<Length<typeof tesla>, 4>>,
-  Expect<Equal<Length<typeof spaceX>, 5>>,
+  Expect<Equal<First<[3, 2, 1]>, 3>>,
+  Expect<Equal<First<[() => 123, { a: string }]>, () => 123>>,
+  Expect<Equal<First<[]>, never>>,
+  Expect<Equal<First<[undefined]>, undefined>>
+];
+
+type errors = [
   // @ts-expect-error
-  Length<5>,
+  First<"notArray">,
   // @ts-expect-error
-  Length<"hello world">
+  First<{ 0: "arrayLike" }>
 ];
 ```
 
