@@ -1,3 +1,5 @@
+// https://www.youtube.com/watch?v=-rJ2XzQg8Ek
+
 const makeKeyRemover =
   <Key extends string>(keys: Key[]) =>
   <Obj>(obj: Obj): Omit<Obj, Key> => {

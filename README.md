@@ -23,6 +23,7 @@
 - [13-deep-value](#13-deep-value)
 - [14-props-from-react-component](#14-props-from-react-component)
 - [15-key-remover](#15-key-remover)
+- [16-iterating-over-object-keys](#16-iterating-over-object-keys)
 
 ## 00-tuple-to-object
 
@@ -509,4 +510,26 @@ newObject.c;
 newObject.a;
 //@ts-expect-error
 newObject.d;
+```
+
+## 16-iterating-over-object-keys
+
+<a href="https://www.youtube.com/watch?v=GW00zebIt0g" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
+<a href="./examples/16-iterating-over-object-keys/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
+<br />
+
+```ts
+export const myObject = {
+  a: 1,
+  b: 2,
+  c: 3,
+};
+
+const objectKeys = <Obj>(obj: Obj): (keyof Obj)[] => {
+  return Object.keys(obj) as (keyof Obj)[];
+};
+
+objectKeys(myObject).forEach((key) => {
+  console.log(myObject[key]); // key: "a" | "b" | "c"
+});
 ```
