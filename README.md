@@ -24,6 +24,7 @@
 - [14-props-from-react-component](#14-props-from-react-component)
 - [15-key-remover](#15-key-remover)
 - [16-iterating-over-object-keys](#16-iterating-over-object-keys)
+- [17-custom-errors](#17-custom-errors)
 
 ## 00-tuple-to-object
 
@@ -532,4 +533,30 @@ const objectKeys = <Obj>(obj: Obj): (keyof Obj)[] => {
 objectKeys(myObject).forEach((key) => {
   console.log(myObject[key]); // key: "a" | "b" | "c"
 });
+```
+
+## 17-custom-errors
+
+<a href="https://www.youtube.com/watch?v=7BnoNWu2y3Y" target="_blank"><img src="https://img.shields.io/badge/-YouTube explanation-c4302b" alt="YouTube"/></a>
+<a href="./examples/17-custom-errors/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
+<br />
+
+```ts
+type CheckForBadArgs<Arg> = Arg extends any[]
+  ? "You cannot compare two arrays using deepEqualCompare"
+  : Arg;
+
+export const deepEqualCompare = <Arg>(
+  a: CheckForBadArgs<Arg>,
+  b: CheckForBadArgs<Arg>
+): boolean => {
+  if (Array.isArray(a) || Array.isArray(b)) {
+    throw new Error("You cannot compare two arrays using deepEqualCompare");
+  }
+  return a === b;
+};
+
+deepEqualCompare(1, 1);
+// @ts-expect-error
+deepEqualCompare([], []);
 ```
