@@ -58,7 +58,9 @@ type cases = [
   Expect<Equal<TupleToObject<typeof tupleMix>, { 1: 1; "2": "2"; 3: 3; "4": "4" }>>
 ];
 
-// @ts-expect-error
+/**
+ * Should error
+ */
 type error = TupleToObject<[[1, 2], {}]>;
 ```
 
@@ -192,9 +194,10 @@ const todo: MyReadonly<Todo> = {
   description: "foobar",
 };
 
-// @ts-expect-error
+/**
+ * Should error
+ */
 todo.title = "Hello"; // Error: cannot reassign a readonly property
-// @ts-expect-error
 todo.description = "barFoo"; // Error: cannot reassign a readonly property
 ```
 
@@ -253,9 +256,10 @@ const spaceX = ["FALCON 9", "FALCON HEAVY", "DRAGON", "STARSHIP", "HUMAN SPACEFL
 type cases = [
   Expect<Equal<Length<typeof tesla>, 4>>,
   Expect<Equal<Length<typeof spaceX>, 5>>,
-  // @ts-expect-error
+  /**
+   * Should error
+   */
   Length<5>,
-  // @ts-expect-error
   Length<"hello world">
 ];
 ```
@@ -280,12 +284,10 @@ type cases = [
   Expect<Equal<First<[undefined]>, undefined>>
 ];
 
-type errors = [
-  // @ts-expect-error
-  First<"notArray">,
-  // @ts-expect-error
-  First<{ 0: "arrayLike" }>
-];
+/**
+ * Should error
+ */
+type errors = [First<"notArray">, First<{ 0: "arrayLike" }>];
 ```
 
 ## 08-easy-pick
@@ -507,9 +509,7 @@ newObject.c;
 /**
  * Should error
  */
-//@ts-expect-error
 newObject.a;
-//@ts-expect-error
 newObject.d;
 ```
 
@@ -557,6 +557,9 @@ export const deepEqualCompare = <Arg>(
 };
 
 deepEqualCompare(1, 1);
-// @ts-expect-error
+
+/**
+ * Should error
+ */
 deepEqualCompare([], []);
 ```
