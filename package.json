@@ -2,21 +2,36 @@
   "name": "typescript-wizard",
   "description": "Knowledge bank for TypeScript",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "build": "swc examples -d build",
+    "build-dev": "npm run build && node --inspect",
+    "dev": "nodemon --ext ts --exec \"npm run build-dev\"",
+    "start": "npm run build && node $PATH",
+    "ts-watch": "tsc -w",
+    "ts-dev": "nodemon"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rmatu/typescript-wizard.git"
+    "url": "git+https://github.com/rmatu/typescript-knowledge-bank.git"
   },
   "dependencies": {
     "@type-challenges/utils": "^0.1.1",
     "react": "^18.2.0",
-    "ts-toolbelt": "^9.6.0"
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "ts-toolbelt": "^9.6.0",
+    "typescript": "^4.7.4",
+    "zod": "^3.18.0"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ryszard Matula",
   "license": "ISC",
-  "homepage": "https://github.com/rmatu/typescript-wizard#readme",
+  "homepage": "https://github.com/rmatu/typescript-knowledge-bank#readme",
   "devDependencies": {
-    "@types/react": "^18.0.15"
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.2.233",
+    "@swc/helpers": "^0.4.6",
+    "@types/react": "^18.0.15",
+    "nodemon": "^2.0.19"
   }
 }
