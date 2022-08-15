@@ -53,7 +53,7 @@ interface Opt<T> {
  *
  * const example = { a: { a1: "a1", a2: 2 }, b: true };
  *
- * prepareInitialDataObj(a, [{ key: "a.a1", value: "new value" }])
+ * copyAndSetObjectValues(a, [{ key: "a.a1", value: "new value" }])
  *
  * Will return:
  *
@@ -62,9 +62,9 @@ interface Opt<T> {
  * @param {DotNestedKeys<T>[]} options - Array of option objects
  * @param {unknown} defaultOverwrite - Default value you want to overwrite the object values
  */
-const prepareInitialDataObj = <T>(obj: T, options?: Opt<T>[], defaultOverwrite: unknown = "") => {
+const copyAndSetObjectValues = <T>(obj: T, options?: Opt<T>[], defaultOverwrite: unknown = "") => {
   return recursiveObjectModify(JSON.parse(JSON.stringify(obj)), defaultOverwrite, options);
 };
 
 const example = { a: { a1: "a1", a2: 2 }, b: true };
-prepareInitialDataObj(example, [{ key: "a.a1", value: "new value" }]); // { a: { a1: 'new value', a2: '' }, b: '' }
+copyAndSetObjectValues(example, [{ key: "a.a1", value: "new value" }], "defaultValue"); // { a: { a1: 'new value', a2: 'defaultValue' }, b: 'defaultValue' }
