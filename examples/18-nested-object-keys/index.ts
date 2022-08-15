@@ -1,70 +1,21 @@
-import { DotNestedKeys } from "./types";
+export type DotPrefix<T extends string> = T extends "" ? "" : `.${T}`;
 
-const recursiveObjectModify = <T extends Record<string, string | object>>(
-  obj: T,
-  defaultOverwrite: unknown,
-  opt?: Opt<T>[]
-) => {
-  let k: keyof T;
+export type DotNestedKeys<T> = T extends Date | Function | Array<any>
+  ? ""
+  : (
+      T extends object
+        ? { [K in Exclude<keyof T, symbol>]: `${K}${DotPrefix<DotNestedKeys<T[K]>>}` }[Exclude<
+            keyof T,
+            symbol
+          >]
+        : ""
+    ) extends infer D
+  ? Extract<D, string>
+  : never;
 
-  for (k in obj) {
-    if (typeof obj[k] === "object" && obj[k] !== null) {
-      recursiveObjectModify(
-        obj[k] as Record<string, object>,
-        defaultOverwrite,
-        opt as Opt<Record<string, object>>[]
-      );
-      continue;
-    }
-
-    let updateV;
-    const found = opt?.find(({ key, value }) => {
-      const index = key.lastIndexOf(".");
-      const currKey = key.slice(index + 1);
-
-      if (k === currKey) {
-        updateV = value;
-        return true;
-      }
-    });
-
-    obj[k] = (defaultOverwrite ?? "") as T[keyof T];
-
-    if (found && updateV) {
-      obj[k] = updateV as T[keyof T];
-    }
-  }
-
-  return obj;
+const obj = {
+  a: { a1: "a1", a2: 2, a3: { "a3-1": "a3-1", "a3-2": "a3-2", "a3-3": "a3-3" } },
+  b: true,
 };
 
-interface Opt<T> {
-  key: DotNestedKeys<T>;
-  value: unknown;
-}
-
-/**
- * Clones object and sets all key values to empty string "".
- *
- * If you want to overwrite value of object's key, you can pass an array of option objects
- * that consists of key - which targets the value you want to modify, and a value that modifies the value
- *
- * For example:
- *
- * const example = { a: { a1: "a1", a2: 2 }, b: true };
- *
- * prepareInitialDataObj(a, [{ key: "a.a1", value: "new value" }])
- *
- * Will return:
- *
- * { a: { a1: 'new value', a2: '' }, b: '' }
- * @param {T} obj - Object to clone.
- * @param {DotNestedKeys<T>[]} keys - Array of option objects
- * @param {unknown} defaultOverwrite - Default value you want to overwrite the object values
- */
-const prepareInitialDataObj = <T>(obj: T, opt?: Opt<T>[], defaultOverwrite: unknown = "") => {
-  return recursiveObjectModify(JSON.parse(JSON.stringify(obj)), defaultOverwrite, opt);
-};
-
-const example = { a: { a1: "a1", a2: 2 }, b: true };
-prepareInitialDataObj(example, [{ key: "a.a1", value: "new value" }]); // { a: { a1: 'new value', a2: '' }, b: '' }
+export type example = DotNestedKeys<typeof obj>; // "b" | "a.a1" | "a.a2" | "a.a3.a3-1" | "a.a3.a3-2" | "a.a3.a3-3"
