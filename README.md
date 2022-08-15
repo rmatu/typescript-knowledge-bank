@@ -25,6 +25,8 @@
 - [15-key-remover](#15-key-remover)
 - [16-iterating-over-object-keys](#16-iterating-over-object-keys)
 - [17-custom-errors](#17-custom-errors)
+- [18-nested-object-keys](#18-nested-object-keys)
+- [19-modify-nested-object-values](#19-modify-nested-object-values)
 
 ## 00-tuple-to-object
 
@@ -562,4 +564,66 @@ deepEqualCompare(1, 1);
  * Should error
  */
 deepEqualCompare([], []);
+```
+
+## 18-nested-object-keys
+
+<a href="./examples/18-nested-object-keys/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Code"/></a>
+<br />
+
+```ts
+export type DotPrefix<T extends string> = T extends "" ? "" : `.${T}`;
+
+export type DotNestedKeys<T> = T extends Date | Function | Array<any>
+  ? ""
+  : (
+      T extends object
+        ? { [K in Exclude<keyof T, symbol>]: `${K}${DotPrefix<DotNestedKeys<T[K]>>}` }[Exclude<
+            keyof T,
+            symbol
+          >]
+        : ""
+    ) extends infer D
+  ? Extract<D, string>
+  : never;
+
+const obj = {
+  a: { a1: "a1", a2: 2, a3: { "a3-1": "a3-1", "a3-2": "a3-2", "a3-3": "a3-3" } },
+  b: true,
+};
+
+export type example = DotNestedKeys<typeof obj>; // "b" | "a.a1" | "a.a2" | "a.a3.a3-1" | "a.a3.a3-2" | "a.a3.a3-3"
+```
+
+## 19-modify-nested-object-values
+
+<a href="./examples/19-modify-nested-object-values/index.ts" target="_blank"><img src="https://img.shields.io/badge/-Code-d9901a" alt="Full Code"/></a>
+<br />
+
+```ts
+/**
+ * Clones object and sets all key values to empty string "".
+ *
+ * If you want to overwrite value of object's key, you can pass an array of option objects
+ * that consists of key - which targets the value you want to modify, and a value that modifies the value
+ *
+ * For example:
+ *
+ * const example = { a: { a1: "a1", a2: 2 }, b: true };
+ *
+ * copyAndSetObjectValues(a, [{ key: "a.a1", value: "new value" }])
+ *
+ * Will return:
+ *
+ * { a: { a1: 'new value', a2: '' }, b: '' }
+ * @param {T} obj - Object to clone.
+ * @param {DotNestedKeys<T>[]} options - Array of option objects
+ * @param {unknown} defaultOverwrite - Default value you want to overwrite the object values
+ */
+const copyAndSetObjectValues = <T>(obj: T, options?: Opt<T>[], defaultOverwrite: unknown = "") => {
+  return recursiveObjectModify(JSON.parse(JSON.stringify(obj)), defaultOverwrite, options);
+};
+
+const example = { a: { a1: "a1", a2: 2 }, b: true };
+copyAndSetObjectValues(example, [{ key: "a.a1", value: "new value" }], "defaultValue"); // { a: { a1: 'new value', a2: 'defaultValue' }, b: 'defaultValue' }
 ```
