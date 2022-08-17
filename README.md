@@ -611,7 +611,7 @@ export type example = DotNestedKeys<typeof obj>; // "b" | "a.a1" | "a.a2" | "a.a
  *
  * const example = { a: { a1: "a1", a2: 2 }, b: true };
  *
- * copyAndSetObjectValues(a, [{ key: "a.a1", value: "new value" }])
+ * copyAndSetObjectValues(example, [{ key: "a.a1", value: "new value" }])
  *
  * Will return:
  *

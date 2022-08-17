@@ -30,14 +30,13 @@ const recursiveObjectModify = <T extends Record<string, string | object>>(
 
     obj[k] = (defaultOverwrite ?? "") as T[keyof T];
 
-    if (found && updateV) {
-      obj[k] = updateV as T[keyof T];
+    if (found) {
+      obj[k] = updateV as unknown as T[keyof T];
     }
   }
 
   return obj;
 };
-
 interface Opt<T> {
   key: DotNestedKeys<T>;
   value: unknown;
@@ -53,7 +52,7 @@ interface Opt<T> {
  *
  * const example = { a: { a1: "a1", a2: 2 }, b: true };
  *
- * copyAndSetObjectValues(a, [{ key: "a.a1", value: "new value" }])
+ * copyAndSetObjectValues(example, [{ key: "a.a1", value: "new value" }])
  *
  * Will return:
  *
